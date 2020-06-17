@@ -7,6 +7,7 @@ const { Commands, commandMark, getCommand } = require('./commands');
 const commands = Commands();
 
 client.on('ready', () => {
+  client.user.setActivity('!help', { type: 'WATCHING' });
   console.log(`Logged in as ${client.user.tag}!`);
 });
 

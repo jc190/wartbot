@@ -8,11 +8,11 @@ commands.gamedeals = (msg) => {
     .then((data) => data.json())
     .then((json) => {
       return json.data.children.map((post) => {
-        return `${post.data.title} (${post.data.url})`;
+        return `${post.data.title} (<${post.data.url}>)`;
       });
     })
     .then((data) => {
-      msg.author.send('Here are the top 5 deals going on today. Source (https://reddit.com/r/gamedeals)');
+      msg.author.send('Here are the top 5 deals going on today. Source (<https://reddit.com/r/gamedeals>)');
       msg.author.send(data.join("\n\n"))
         .catch(() => msg.author.send('Something went terribly wrong :('));
     })

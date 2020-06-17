@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const commands = {};
 
 commands.gamedeals = (msg) => {
-  fetch('https://old.reddit.com/r/GameDeals/.json?limit=4')
+  fetch('https://old.reddit.com/r/GameDeals/.json?limit=5')
     .then((data) => data.json())
     .then((json) => {
       return json.data.children.map((post) => {
@@ -12,7 +12,7 @@ commands.gamedeals = (msg) => {
       });
     })
     .then((data) => {
-      msg.author.send('Here are the top 5 deals going on today. Source (<https://reddit.com/r/gamedeals>)');
+      msg.author.send('Here are 5 trending deals going on today. Source (<https://reddit.com/r/gamedeals>)');
       msg.author.send(data.join("\n\n"))
         .catch(() => msg.author.send('Something went terribly wrong :('));
     })

@@ -1,7 +1,32 @@
+const fs = require('fs');
+const path = require('path');
 const { MessageAttachment } = require('discord.js');
 const fetch = require('node-fetch');
+const { dirname } = require('path');
 
 const commands = {};
+
+commands.ascii = async (msg, args) => {
+  try {
+    switch (args[0]) {
+      case 'pikachu':
+        await getAscii('pika', msg);
+        break;
+      case 'monkas':
+        await getAscii('monkas', msg);
+        break;
+      case 'pogchamp':
+        await getAscii('pogchamp', msg);
+        break;
+      default:
+        msg.reply(`Sorry did not find what you are looking for. Here is a list of available ascii art: ${['pikachu', 'monkas', 'pogchamp'].join(', ')}.`);
+        break;
+    }
+  } catch (error) {
+    console.error(error);
+    msg.reply('Sorry something went really wrong...');
+  }
+}
 
 commands.gamedeals = (msg) => {
   fetch('https://old.reddit.com/r/GameDeals/.json?limit=5')
@@ -40,6 +65,13 @@ function getCommand(str) {
   const cmd = arr[0];
   const args = arr.slice(1);
   return { cmd, args };
+}
+
+function getAscii(name, msg) {
+  fs.readFile(`./ascii/${name}.ascii`, {encoding: 'utf-8'}, (err, data) => {
+    if (err) throw err;
+    msg.channel.send(data);
+  });
 }
 
 exports.Commands = () => commands;

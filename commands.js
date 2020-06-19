@@ -22,29 +22,34 @@ commands.ascii = async (msg, args) => {
         msg.reply(`Sorry did not find what you are looking for. Here is a list of available ascii art: ${['pikachu', 'monkas', 'pogchamp'].join(', ')}.`);
         break;
     }
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     msg.reply('Sorry something went really wrong...');
   }
 }
 
-commands.gamedeals = (msg) => {
-  fetch('https://old.reddit.com/r/GameDeals/.json?limit=5')
-    .then((data) => data.json())
-    .then((json) => {
-      return json.data.children.map((post) => {
-        return `${post.data.title} (<${post.data.url}>)`;
+commands.gamedeals = async (msg) => {
+  try {
+    await fetch('https://old.reddit.com/r/GameDeals/.json?limit=10')
+      .then((data) => data.json())
+      .then((json) => {
+        return json.data.children.map((post) => {
+          return `${post.data.title} (<${post.data.url}>)\n`;
+        });
+      })
+      .then((data) => {
+        msg.author.send('Here are 10 trending deals going on today. Source (<https://reddit.com/r/gamedeals>)');
+        msg.author.send(data)
+          .catch(() => msg.author.send('Something went terribly wrong :('));
+      })
+      .catch((err) => {
+        console.log(err);
+        msg.author.send("Sorry was unable to fetch the gamedeals data. :(");
       });
-    })
-    .then((data) => {
-      msg.author.send('Here are 5 trending deals going on today. Source (<https://reddit.com/r/gamedeals>)');
-      msg.author.send(data.join("\n\n"))
-        .catch(() => msg.author.send('Something went terribly wrong :('));
-    })
-    .catch((err) => {
-      console.log(err);
-      msg.author.send("Sorry was unable to fetch the gamedeals data. :(");
-    });
+  } catch (err) {
+    console.error(err);
+    msg.reply('Sorry something went really wrong...');
+  }
 };
 
 commands.help = (msg) => msg.reply(`Command list: ${listCommands()}`);

@@ -39,8 +39,7 @@ commands.gamedeals = async (msg) => {
       })
       .then((data) => {
         msg.author.send('Here are 10 trending deals going on today. Source (<https://reddit.com/r/gamedeals>)');
-        msg.author.send(data)
-          .catch(() => msg.author.send('Something went terribly wrong :('));
+        data.map((d) => msg.author.send(d));
       })
       .catch((err) => {
         console.log(err);
